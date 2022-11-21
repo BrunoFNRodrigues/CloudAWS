@@ -1,20 +1,49 @@
 variable "access_key" {
-
+  type = string
 }
 
 variable "secret_key" {
+  type = string
+}
+
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
+
+variable "instances" {
+  type = list(object({
+    security_groups = list(string)
+    name            = string
+    ami             = string
+    instance_type   = string
+    region          = string
+  }))
+}
+
+variable "security_groups" {
+  type = list(object({
+    id          = string
+    name        = string
+    description = string
+    ingress = list(object({
+      from_port   = number
+      to_port     = number
+      description = string
+      protocol    = string
+      cidr_blocks = list(string)
+    }))
+  }))
+}
+
+variable "users" {
+  type = list(object({
+    name = string
+  }))
 
 }
 
-variable "profile" {
-  
+variable "vpc_cidr" {
+  type = string
 }
 
-variable "AMI" {
-    type = "map"
-    
-    default {
-        eu-west-2 = "ami-03dea29b0216a1e03"
-        us-east-1 = "ami-0c2a1acae6667e438"
-    }
-}
