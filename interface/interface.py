@@ -2,65 +2,6 @@ import os
 import json
 
 
-instance_security_groups = [""]
-instance_name = ""
-instance_ami = ""
-instance_type = ""
-instance_region = ""
-
-instances = [
-    {
-        "security_groups" : instance_security_groups,
-        "name"            : instance_name,
-        "ami"             : instance_ami,
-        "instance_type"   : instance_type,
-        "region"          : instance_region
-    }
-]
-
-security_group_id = ""
-security_group_name = ""
-security_group_description = ""
-security_group_ingress = []
-security_group_ingress_from_port = ""
-security_group_ingress_to_port = ""
-security_group_ingress_description = ""
-security_group_ingress_protocol = ""
-security_group_ingress_cidr_blocks = [""]
-ingress = {
-    "from_port"   : security_group_ingress_from_port,
-    "to_port"     : security_group_ingress_to_port,
-    "description" : security_group_ingress_description,
-    "protocol"    : security_group_ingress_protocol,
-    "cidr_blocks" : security_group_ingress_cidr_blocks
-}
-security_group_ingress = [ingress]
-
-security_groups = [
-    {
-        "id"          : security_group_id,
-        "name"        : security_group_name,
-        "description" : security_group_description,
-        "ingress" : security_group_ingress
-    }
-]
-
-users_name = ""
-users = [
-    {
-        "name" : users_name
-    }
-]
-
-vpc_cidr = ""
-
-
-
-
-
-
-
-
 def main():
     print("""\nBem-vindo(a) ao melhor sistema de configuração de infra para aws já feito:\n
           Escolha umas da opções asseguir:\n
