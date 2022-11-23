@@ -1,19 +1,22 @@
 import os
 import json
+import time
 
 
 def main():
     print("""\nBem-vindo(a) ao melhor sistema de configuração de infra para aws já feito:\n
           Escolha umas da opções asseguir:\n
           1 - Criar infraestruturo do zero\n
-          2 - Editar infraestrutura atual\n
+          2 - Listar infraestrutura atual\n
           3 - Deletar infraestrutura\n""")
     option = input("Favor escrever apenas o número da opção(ex. 1): ")
     
     if option == "1":
         print("Configurando VPC:")
         vpc_cidr = input("VPC cidr: ")
+        time.sleep(2)
         print("Configurando subnet:")
+        time.sleep(2)
         #Adiciona instancia
         instances = []
         while(1):
@@ -105,20 +108,117 @@ def main():
             continuar = input("Deseja adicionar mais um usuário: [s/n] ").lower()
             if continuar == "não" or continuar == "n" or continuar == "nao":
                 break
-      
-    var = {
-        "users":users,
-        "instances":instances,
-        "security_groups": security_groups,
-        "vpc_cidr": vpc_cidr
-    }
-   
-    json_object = json.dumps(var, indent=4)
 
-    with open('testes.tfvars.json', 'w') as f:
-        f.write(json_object) 
-             
-    os.system('terraform plan -var-file="testes.tfvars.json"')
+        var = {
+            "users":users,
+            "instances":instances,
+            "security_groups": security_groups,
+            "vpc_cidr": vpc_cidr
+        }
+    
+        json_object = json.dumps(var, indent=4)
+
+        with open('testes.tfvars.json', 'w') as f:
+            f.write(json_object) 
+                
+        os.system('terraform plan -var-file="testes.tfvars.json"')
+
+    elif option == "2":
+        print("""Vamos listar a baita infra, escolha uma opção:\n
+                1 - Instâncias\n
+                2 - Grupos de segurança\n
+                3 - Usuários\n 
+        """)
+        option = input("(｢•-•)｢ ")
+        if option == "1":
+            try : 
+                f =  open("testes.tfvars.json")
+            except : 
+                print("Não há uma infraestrutura criada") 
+                pass
+            print("Lista de Instâncias:")
+            
+            instances = json.load(f)["instances"]
+            print(instances)
+
+
+
+        elif option == "2":
+            try : 
+                f =  open("testes.tfvars.json")
+            except : 
+                print("Não há uma infraestrutura criada") 
+                pass
+            print("Lista dos grupos de segurança:")
+            
+            sgs = json.load(f)["security_groups"]
+            f.close()
+            print(sgs)
+
+        elif option == "3":
+            try : 
+                f =  open("testes.tfvars.json")
+            except : 
+                print("Não há uma infraestrutura criada") 
+                pass
+            print("Lista dos grupos de segurança:")
+            
+            users = json.load(f)["users"]
+            f.close()
+            print(users)
+                
+    elif option == "3":
+        try : 
+            f =  open("testes.tfvars.json")
+        except : 
+            print("Não há uma infraestrutura criada") 
+            pass
+
+        infra = json.load(f)
+        f.close()
+        print("""Vamos deletar a baita infra, escolha uma opção:\n
+                1 - Instâncias\n
+                2 - Grupos de segurança\n
+                3 - Usuários\n
+                4 - Tudo\n 
+        """)
+        option = input("(｢•-•)｢ ")
+
+        if option == "1":
+            print("Lista de Instâncias:")
+            
+            instances = infra["instances"]
+            print(instances)
+            i = input("(｢•-•)｢ ")
+            instances.pop(i)
+            print(instances)
+
+        elif option == "2":
+            print("Lista dos grupos de segurança:")
+            
+            sgs = infra["security_groups"]
+            f.close()
+            print(sgs)
+            i = input("(｢•-•)｢ ")
+            sgs.pop(i)
+            print(sgs)
+
+        elif option == "3":
+            print("Lista dos grupos de segurança:")
+            
+            users = infra["users"]
+            f.close()
+            print(users)
+            i = input("(｢•-•)｢ ")
+            users.pop(i)
+            print(users)
+
+
+
+
+
+
+
     
 
 if __name__ == "__main__":
