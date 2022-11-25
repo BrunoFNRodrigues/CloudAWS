@@ -246,12 +246,8 @@ def main():
         elif option == "4":
             print("Deletando toda infraestrutura:")
             
-            users = infra["users"]
-            f.close()
-            print(users)
-            i = input("(L•-•)L ")
-            users.pop(i)
-            print(users)
+            os.system("terraform destroy")
+            
 
 
 
