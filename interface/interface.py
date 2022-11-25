@@ -129,7 +129,7 @@ def main():
                 2 - Grupos de segurança\n
                 3 - Usuários\n 
         """)
-        option = input("(｢•-•)｢ ")
+        option = input("(L•-•)L ")
         if option == "1":
             try : 
                 f =  open("testes.tfvars.json")
@@ -139,7 +139,12 @@ def main():
             print("Lista de Instâncias:")
             
             instances = json.load(f)["instances"]
-            print(instances)
+            for instance in instances:
+                print("Nome -> "+ instance["name"])
+                print("Tipo -> "+ instance["instance_type"])
+                print("AMI -> "+ instance["ami"])
+                print("Região -> "+ instance["region"])
+                print("Grupos de segurança -> "+ instance["region"]+"\n")
 
 
 
@@ -153,7 +158,13 @@ def main():
             
             sgs = json.load(f)["security_groups"]
             f.close()
-            print(sgs)
+
+            for sg in sgs:
+                print("Nome -> "+ sg["name"])
+                print("ID -> "+ sg["id"])
+                print("Descrição -> "+ sg["description"])
+                print("Regras de ingresso -> "+ sg["ingress"]+"\n")
+
 
         elif option == "3":
             try : 
@@ -165,7 +176,9 @@ def main():
             
             users = json.load(f)["users"]
             f.close()
-            print(users)
+
+            for user in users:
+                print("Nome -> "+user["name"]+"\n")
                 
     elif option == "3":
         try : 
@@ -182,34 +195,61 @@ def main():
                 3 - Usuários\n
                 4 - Tudo\n 
         """)
-        option = input("(｢•-•)｢ ")
+        option = input("(L•-•)L ")
 
         if option == "1":
             print("Lista de Instâncias:")
             
             instances = infra["instances"]
-            print(instances)
-            i = input("(｢•-•)｢ ")
-            instances.pop(i)
-            print(instances)
+            flag = 0
+            while(flag != "n"):
+                i = 0
+                for instance in instances:
+                    print(i+": Nome -> "+ instance["name"])
+                    i += 1
+                i = input("(L•-•)L ")
+                instances.pop(i)
+
+                flag = input("Deseja contibuar a remover[s/n]: ")
+
 
         elif option == "2":
             print("Lista dos grupos de segurança:")
             
             sgs = infra["security_groups"]
-            f.close()
-            print(sgs)
-            i = input("(｢•-•)｢ ")
-            sgs.pop(i)
-            print(sgs)
+            flag = 0
+            while(flag != "n"):
+                i = 0
+                for sg in sgs:
+                    print(i+": Nome -> "+ sg["name"])
+                    i += 1
+                i = input("(L•-•)L ")
+                sgs.pop(i)
+
+                flag = input("Deseja contibuar a remover[s/n]: ")
 
         elif option == "3":
             print("Lista dos grupos de segurança:")
             
             users = infra["users"]
+            flag = 0
+            while(flag != "n"):
+                i = 0
+                for user in users:
+                    print(i+": Nome -> "+ user["name"])
+                    i += 1
+                i = input("(L•-•)L ")
+                users.pop(i)
+
+                flag = input("Deseja contibuar a remover[s/n]: ")
+
+        elif option == "4":
+            print("Deletando toda infraestrutura:")
+            
+            users = infra["users"]
             f.close()
             print(users)
-            i = input("(｢•-•)｢ ")
+            i = input("(L•-•)L ")
             users.pop(i)
             print(users)
 
