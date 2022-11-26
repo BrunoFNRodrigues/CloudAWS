@@ -20,6 +20,36 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
+#Cria Gateway
+resource "aws_internet_gateway" "subnet_igw" {
+  vpc_id = aws_vpc.VPC.id
+
+  tags{
+    Name = "subnet-igw"
+  }
+  
+}
+
+resource "aws_route_table" "subnet_public_crt" {
+    vpc_id = aws_vpc.VPC.id
+    
+    route {
+        //associated subnet can reach everywhere
+        cidr_block = "0.0.0.0/0" 
+        //CRT uses this IGW to reach internet
+        gateway_id = "${aws_internet_gateway.subnet_igw.id}" 
+    }
+    
+    tags {
+        Name = "prod-public-crt"
+    }
+}
+
+resource "aws_route_table_association" "crta_public_subnet"{
+    subnet_id = aws_subnet.public_subnet.id
+    route_table_id = aws_route_table.subnet_public_crt.id
+}
+
 #Cria instancia
 resource "aws_instance" "instance" {
   for_each               = { for instance in var.instances : instance.name => instance }
