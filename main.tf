@@ -57,10 +57,22 @@ resource "aws_instance" "instance" {
   instance_type          = each.value.instance_type
   subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [for security_group in aws_security_group.SecurityGroup : security_group.id if contains(each.value.security_groups, security_group.tags.Name)]
-  #  key_name               = "teste"
+  key_name               = each.value.name
   tags = {
     Name = each.value.name
   }
+}
+
+resource "aws_key_pair" "TF_key" {
+  for_each = { for instance in var.instances : instance.name => instance }
+  key_name   = each.value.name
+  public_key = tls_private_key.rsa.public_key_openssh
+}
+
+
+resource "tls_private_key" "rsa" {
+  algorithm = "RSA"
+  rsa_bits = 4096
 }
 
 #Cria Security Group
@@ -83,6 +95,14 @@ resource "aws_security_group" "SecurityGroup" {
       cidr_blocks = ingress.value.cidr_blocks
     }
   }
+  
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
 }
 
 #Cria usario
