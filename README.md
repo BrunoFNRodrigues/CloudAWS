@@ -61,6 +61,7 @@ As opcções possuem o seguinte comportamento:
 ```
 
 ## Remover Recursos:
+Para deletar qualquer recurso e necessário passar apenas o número a ele associado:
 ```
 1. Permite remover uma ou mais intâncias.
 
