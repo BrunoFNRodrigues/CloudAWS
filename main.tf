@@ -50,6 +50,23 @@ resource "aws_route_table_association" "crta_public_subnet" {
   route_table_id = aws_route_table.subnet_public_crt.id
 }
 
+resource "aws_key_pair" "TF_key" {
+  for_each = { for instance in var.instances : instance.name => instance }
+  key_name   = each.value.name
+  public_key = tls_private_key.rsa.public_key_openssh
+}
+
+
+resource "tls_private_key" "rsa" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
+resource "local_file" "tf-key" {
+    content  = tls_private_key.rsa.private_key_pem
+    filename = "../keys/instance_kp"
+}
+
 #Cria instancia
 resource "aws_instance" "instance" {
   for_each               = { for instance in var.instances : instance.name => instance }
@@ -61,18 +78,6 @@ resource "aws_instance" "instance" {
   tags = {
     Name = each.value.name
   }
-}
-
-resource "aws_key_pair" "TF_key" {
-  for_each = { for instance in var.instances : instance.name => instance }
-  key_name   = each.value.name
-  public_key = tls_private_key.rsa.public_key_openssh
-}
-
-
-resource "tls_private_key" "rsa" {
-  algorithm = "RSA"
-  rsa_bits = 4096
 }
 
 #Cria Security Group
