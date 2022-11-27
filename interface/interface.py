@@ -4,9 +4,15 @@ import time
 
 
 def main():
+    try: 
+        with open("inputs.tfvars.json", "r") as f:
+            pass
+    except:
+        os.system("terraform init")
+        
     while(1):
-        print("""\nMENU PRICIPAL\n
-            Escolha uma das opções asseguir:\n
+        print("""\nMENU PRINCIPAL\n
+            Escolha uma das opções a seguir:\n
             0 - Sair\n
             1 - Criar Recursos\n
             2 - Listar infraestrutura atual\n
@@ -44,8 +50,8 @@ def main():
                         print("Configurando instâncias:")
                         print("Insira os nomes dos security groups da instância:")
                         print("Obs: Para parar digite 0")
+                        instance_security_groups = []
                         while(1):
-                            instance_security_groups = []
                             sg = input("Nome do grupo de segurança: ")
                             if sg == "0":
                                 break
@@ -77,7 +83,7 @@ def main():
                         security_group_name = input("Nome do grupo de segurança: ")  
                         security_group_description = input("Descrição do grupo de segurança: ")  
                         security_group_ingress = []
-                        print("Definição das regras de engreço")
+                        print("Definição das regras de ingresso")
                         while(1):
                             security_group_ingress_from_port = input("Porta de entrada: ")  
                             security_group_ingress_to_port = input("Porta de saída: ")  
@@ -118,7 +124,7 @@ def main():
                         if continuar == "não" or continuar == "n" or continuar == "nao":
                             break
                 elif option == "3":   
-                    #Adciona usuario
+                    #Adiciona usuario
                     users = infra["users"]
                     while(1):
                         users_name = input("Nome do usuário: ")
@@ -229,7 +235,7 @@ def main():
                     
                     instances = infra["instances"]
                     flag = ""
-                    while(flag != "n"):
+                    while(flag != "n" and len(instances) > 0):
                         i = 0
                         for instance in instances:
                             print(str(i)+": Nome -> "+ instance["name"])
@@ -247,7 +253,7 @@ def main():
                     
                     sgs = infra["security_groups"]
                     flag = ""
-                    while(flag != "n"):
+                    while(flag != "n" and len(sgs) > 0):
                         i = 0
                         for sg in sgs:
                             print(str(i)+": Nome -> "+ sg["name"])
@@ -266,7 +272,7 @@ def main():
                     
                     users = infra["users"]
                     flag = ""
-                    while(flag != "n"):
+                    while(flag != "n" and len(users) > 0):
                         i = 0
                         for user in users:
                             print(str(i)+": Nome -> "+ user["name"])
@@ -282,8 +288,11 @@ def main():
 
                 elif option == "4":
                     print("Deletando toda infraestrutura:")
-                    os.system('terraform destroy -var-file="inputs.tfvars.json"')
-                    os.remove("inputs.tfvars.json")
+                    try:
+                        os.system('terraform destroy -var-file="inputs.tfvars.json"')
+                        os.remove("inputs.tfvars.json")
+                    except:
+                        print("Não foi possível realizar essa ação")
                 
                 else:
                     break
@@ -297,9 +306,12 @@ def main():
             try: 
                 with open("inputs.tfvars.json", "r") as f:
                     infra = json.load(f)
-                os.system('terraform plan -var-file="inputs.tfvars.json"')         
+                os.system('terraform apply -var-file="inputs.tfvars.json"')         
             except:  
                 print("Não há uma infraestrutura criada") 
+                
+            break
+            
         elif option == "0":
             break
         
@@ -311,3 +323,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
