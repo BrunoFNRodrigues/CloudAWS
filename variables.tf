@@ -41,12 +41,6 @@ variable "security_groups" {
 variable "users" {
   type = list(object({
     name = string
-    restrictions = object({
-      name        = string
-      description = string
-      actions     = list(string)
-      resources   = list(string)
-    })
   }))
 
 }
