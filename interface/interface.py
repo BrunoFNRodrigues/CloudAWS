@@ -16,7 +16,7 @@ def main():
         
         if option == "1":
             try: 
-                with open("testes.tfvars.json", "r") as f:
+                with open("inputs.tfvars.json", "r") as f:
                     infra = json.load(f)
             except:
                 print("Não foi encontrada uma infraestrutura prévia será necessário configurar uma VPC:")
@@ -134,7 +134,7 @@ def main():
         
             json_object = json.dumps(infra, indent=4)
 
-            with open('testes.tfvars.json', 'w') as f:
+            with open('inputs.tfvars.json', 'w') as f:
                 f.write(json_object) 
                     
         elif option == "2":
@@ -147,7 +147,7 @@ def main():
                 option = input("-> ")
                 if option == "1":
                     try : 
-                        f =  open("testes.tfvars.json")
+                        f =  open("inputs.tfvars.json")
                     except : 
                         print("Não há uma infraestrutura criada") 
                         pass
@@ -165,7 +165,7 @@ def main():
                         print(" ")
                 elif option == "2":
                     try : 
-                        f =  open("testes.tfvars.json")
+                        f =  open("inputs.tfvars.json")
                     except : 
                         print("Não há uma infraestrutura criada") 
                         pass
@@ -191,7 +191,7 @@ def main():
 
                 elif option == "3":
                     try : 
-                        f =  open("testes.tfvars.json")
+                        f =  open("inputs.tfvars.json")
                     except : 
                         print("Não há uma infraestrutura criada") 
                         pass
@@ -208,7 +208,7 @@ def main():
                         
         elif option == "3":
             try : 
-                f =  open("testes.tfvars.json")
+                f =  open("inputs.tfvars.json")
                 infra = json.load(f)
                 f.close()
             except : 
@@ -290,11 +290,11 @@ def main():
 
                 infra = json.dumps(infra, indent=4)
 
-                with open('testes.tfvars.json', 'w') as f:
+                with open('inputs.tfvars.json', 'w') as f:
                     f.write(infra)                 
         
         elif option == "4":
-            os.system('terraform plan -var-file="testes.tfvars.json"')
+            os.system('terraform plan -var-file="inputs.tfvars.json"')
         
         elif option == "0":
             break
