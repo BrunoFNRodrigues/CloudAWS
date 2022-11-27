@@ -6,7 +6,7 @@ import time
 def main():
     while(1):
         print("""\nMENU PRICIPAL\n
-            Escolha umas da opções asseguir:\n
+            Escolha uma das opções asseguir:\n
             0 - Sair\n
             1 - Criar Recursos\n
             2 - Listar infraestrutura atual\n
@@ -54,7 +54,7 @@ def main():
                         instance_name = input("Nome da instância: ")
                         instance_ami = input("AMI (ex. ami-08c40ec9ead489470): ")
                         instance_type = input("Tipo de instância (ex. t2.micro): ")
-                        instance_region = input("Região da instância (ex.us-east-1): ")  
+                        instance_region = "us-east-1"  
                         instance = {
                                 "security_groups" : instance_security_groups,
                                 "name"            : instance_name,
@@ -282,8 +282,8 @@ def main():
 
                 elif option == "4":
                     print("Deletando toda infraestrutura:")
-                    
-                    os.system("terraform destroy")
+                    os.system('terraform destroy -var-file="inputs.tfvars.json"')
+                    os.remove("inputs.tfvars.json")
                 
                 else:
                     break
@@ -304,14 +304,6 @@ def main():
             time.sleep(2)
             
             
-
-
-
-
-
-
-
-    
 
 if __name__ == "__main__":
     main()
