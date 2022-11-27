@@ -5,7 +5,7 @@
 ## Configuração:
 Primeiro é necessário criar um arquivo chamado *terraform.tfvars*, e conteúdo dele deve seguir o padrão abaixo:
 ```
-access_key = "{sua acecss key}"
+access_key = "{sua access key}"
 secret_key = "{sua secret key}" 
 ```
 Para executar o programa use o comando, na raiz do repositório:
@@ -16,9 +16,9 @@ python interface/interface.py
 ## Uso:
 Ao executar o arquivo *interface.py*, o programa começa no menu principal, no qual é possível escolher uma opção de configuração digitando o número associado a opção:
 ```
-MENU PRICIPAL
+MENU PRINCIPAL
 
-            Escolha uma das opções asseguir:
+            Escolha uma das opções a seguir:
 
             0 - Sair
 
@@ -33,6 +33,7 @@ MENU PRICIPAL
 Favor escrever apenas o número da opção(ex. 1): 0
 ```
 As opções 1, 2 e 3 levam a menus com comportamento semelhante a esse.
+Obs. Para sair de qualquer desses menus pressione a tecla enter.
 
 ## Criar Recursos:
 Caso não haja nenhuma infraestrutura criada antes de acessar o menu será necessário configurar uma VPC:
@@ -41,19 +42,19 @@ Não foi encontrada uma infraestrutura prévia será necessário configurar uma 
 Configurando VPC:
 VPC cidr:
 ```
-Após configura a VPC ou caso já exista uma infraestrutura préviao o menu irá aparecer.
-As opcções possuem o seguinte comportamento: 
+Após configurar a VPC ou caso já exista uma infraestrutura prévia o menu irá aparecer.
+As opções possuem o seguinte comportamento: 
 ```
-1. Permite criar uma ou mais intâncias, sendo necessário configurar nome, grupos de segurança que ela faz parte, imagem (ami) e tipo da instância.
+1. Permite criar uma ou mais instâncias, sendo necessário configurar nome, grupos de segurança que ela faz parte, imagem (ami) e tipo da instância.
 
 2. Permite criar um ou mais grupos de segurança, sendo necessário configurar id, nome, descrição, regras de ingresso.
 
-3. Perimite criar um ou mais usuários sendo necessário passar apenas o nome. 
+3. Permite criar um ou mais usuários sendo necessário passar apenas o nome. 
 ```
 
 ## Listar Recursos:
 ```
-1. Lista todas as intâncias.
+1. Lista todas as instâncias.
 
 2. Lista todos os grupos de segurança.
 
@@ -61,13 +62,18 @@ As opcções possuem o seguinte comportamento:
 ```
 
 ## Remover Recursos:
-Para deletar qualquer recurso e necessário passar apenas o número a ele associado:
 ```
-1. Permite remover uma ou mais intâncias.
+1. Permite remover uma ou mais instâncias.
 
 2. Permite remover um ou mais grupos de segurança.
 
 3. Permite remover um ou mais usuários.
 
-4. Remove toda a infraestrutura.
+4. Remover toda a infraestrutura.
+```
+Para deletar qualquer recurso é necessário passar apenas o número a ele associado:
+```
+Lista de Instâncias:
+0: Nome -> instancias_teste
+->
 ```

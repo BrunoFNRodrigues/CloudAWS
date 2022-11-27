@@ -294,8 +294,12 @@ def main():
                     f.write(infra)                 
         
         elif option == "4":
-            os.system('terraform plan -var-file="inputs.tfvars.json"')
-        
+            try: 
+                with open("inputs.tfvars.json", "r") as f:
+                    infra = json.load(f)
+                os.system('terraform plan -var-file="inputs.tfvars.json"')         
+            except:  
+                print("Não há uma infraestrutura criada") 
         elif option == "0":
             break
         
