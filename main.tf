@@ -24,30 +24,30 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_internet_gateway" "subnet_igw" {
   vpc_id = aws_vpc.VPC.id
 
-  tags{
+  tags = {
     Name = "subnet-igw"
   }
-  
+
 }
 
 resource "aws_route_table" "subnet_public_crt" {
-    vpc_id = aws_vpc.VPC.id
-    
-    route {
-        //associated subnet can reach everywhere
-        cidr_block = "0.0.0.0/0" 
-        //CRT uses this IGW to reach internet
-        gateway_id = "${aws_internet_gateway.subnet_igw.id}" 
-    }
-    
-    tags {
-        Name = "prod-public-crt"
-    }
+  vpc_id = aws_vpc.VPC.id
+
+  route {
+    //associated subnet can reach everywhere
+    cidr_block = "0.0.0.0/0"
+    //CRT uses this IGW to reach internet
+    gateway_id = aws_internet_gateway.subnet_igw.id
+  }
+
+  tags = {
+    Name = "prod-public-crt"
+  }
 }
 
-resource "aws_route_table_association" "crta_public_subnet"{
-    subnet_id = aws_subnet.public_subnet.id
-    route_table_id = aws_route_table.subnet_public_crt.id
+resource "aws_route_table_association" "crta_public_subnet" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.subnet_public_crt.id
 }
 
 #Cria instancia
@@ -98,42 +98,11 @@ resource "aws_iam_user" "TfUser" {
 #Distribui chaves de acesso
 resource "aws_iam_access_key" "user_access_key" {
   for_each = { for user in var.users : user.name => user }
-  user     = aws_iam_user.user[each.value.name].name
-}
-
-#Cria docs da politica
-data "aws_iam_policy_document" "user_policy" {
-  for_each = { for user in var.users : user.name => user }
-  policy_id = each.value.name
-  statement {
-    effect = "Allow"
-    sid = "VisualEditor0"
-    actions = each.value.restrictions.actions
-    resources = each.value.restrictions.resources
-  }
-}
-
-#Cria politica
-resource "aws_iam_policy" "user_policy" {
-  for_each = { for user in var.users : user.name => user }
-  name        = each.value.restrictions.name
-  description = each.value.restrictions.description
-  policy      = data.aws_iam_policy_document.ec2_policy[each.value.name].json
-}
-
-
-#Liga politica a usuário
-resource "aws_iam_user_policy_attachment" "user_policy_attachment" {
-  for_each = { for user in var.users : user.name => user }
-  user      = aws_iam_user.user[each.value.name].name
-  policy_arn = aws_iam_policy.ec2_policy[each.value.name].arn
+  user     = aws_iam_user.TfUser[each.value.name].name
 }
 
 #Cria perfil de login
 resource "aws_iam_user_login_profile" "user_profile" {
   for_each                = { for user in var.users : user.name => user }
-  user                    = aws_iam_user.user[each.value.name].name
-#   pgp_key                 = var.pgp_key
-  password_length         = 10
-  password_reset_required = true
+  user                    = aws_iam_user.TfUser[each.value.name].name
 }
