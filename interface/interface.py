@@ -19,7 +19,7 @@ def main():
                 with open("testes.tfvars.json", "r") as f:
                     infra = json.load(f)
             except:
-                print("Não foi encontrada uma infraestrutura prévio será necessário configurar uma VPC:")
+                print("Não foi encontrada uma infraestrutura prévia será necessário configurar uma VPC:")
                 print("Configurando VPC:")
                 vpc_cidr = input("VPC cidr: ")
                 time.sleep(2)
@@ -139,7 +139,7 @@ def main():
                     
         elif option == "2":
             while(1):
-                print("""Vamos listar a baita infra, escolha uma opção:\n
+                print("""Listando recursos, escolha uma opção:\n
                         1 - Instâncias\n
                         2 - Grupos de segurança\n
                         3 - Usuários\n 
@@ -195,7 +195,7 @@ def main():
                     except : 
                         print("Não há uma infraestrutura criada") 
                         pass
-                    print("Lista dos grupos de segurança:")
+                    print("Lista dos usuários:")
                     
                     users = json.load(f)["users"]
                     f.close()
